@@ -108,8 +108,8 @@ header,main,footer{ position:relative; z-index:1 }
 .hero__lede{ color:var(--ink-2); font-size:clamp(15.5px,1.55vw,18px); margin:20px 0 0; max-width:48ch }
 .hero__lede b{ color:var(--ink); font-weight:600 }
 .hero__actions{ display:flex; flex-wrap:wrap; gap:11px; margin-top:30px }
-.hero__avail{ font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--pos); display:inline-flex; align-items:center; gap:8px; margin-top:22px }
-.hero__avail i{ width:6px; height:6px; border-radius:50%; background:var(--pos); animation:pulse 2.4s ease-in-out infinite }
+.hero__avail{ font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--pos); display:inline-flex; align-items:flex-start; gap:8px; margin-top:22px; line-height:1.6; max-width:46ch }
+.hero__avail i{ width:6px; height:6px; border-radius:50%; background:var(--pos); animation:pulse 2.4s ease-in-out infinite; flex:none; margin-top:6px }
 .btn{ font-family:var(--body); font-size:14px; font-weight:600; text-decoration:none; padding:12px 21px; border-radius:8px; border:1px solid transparent; display:inline-flex; align-items:center; gap:8px; transition:.18s }
 .btn--solid{ background:var(--accent); color:#101827 }
 .btn--solid:hover{ filter:brightness(1.12) }
@@ -206,6 +206,7 @@ header,main,footer{ position:relative; z-index:1 }
 .node__name{ font-family:var(--display); font-weight:600; font-size:17.5px; letter-spacing:-.02em; line-height:1.25 }
 .node__name small{ display:block; font-family:var(--body); font-weight:400; font-size:13px; color:var(--ink-2); letter-spacing:0; margin-top:3px }
 .node__when{ font-family:var(--mono); font-size:10.5px; color:var(--ink-3); white-space:nowrap }
+.node__when.now{ color:var(--pos) }
 .tree ul ul .node::before{ background:var(--accent-2); width:5px; height:5px; top:15px; left:-28px }
 .leaf{ padding:8px 0; font-size:14px; color:var(--ink-2); line-height:1.55 }
 .leaf b{ color:var(--ink); font-weight:600 }
@@ -313,11 +314,11 @@ footer{ border-top:1px solid var(--line); padding-block:24px; background:color-m
         and own the Power BI Service side — so the report still works the morning
         after it's handed over.
       </p>
-      <p class="hero__avail"><i></i> Available immediately · open to relocation &amp; remote</p>
+      <p class="hero__avail"><i></i> Currently at Smart Minds · 30-day notice, negotiable · open to relocation &amp; remote</p>
       <div class="hero__actions">
         <a class="btn btn--solid" href="#projects">See the work</a>
         <!-- ✏️ Monil_Soni_Power_BI_Developer_Resume.pdf must sit next to this file -->
-        <a class="btn btn--ghost" href="Monil_Soni_Power_BI_Developer_Resume.pdf" download>Download CV</a>
+        <a class="btn btn--ghost" href="Monil_Soni_Resume_PowerBI_&_DataAnalyst.pdf" download>Download CV</a>
       </div>
     </div>
     <div class="report">
@@ -355,7 +356,7 @@ footer{ border-top:1px solid var(--line); padding-block:24px; background:color-m
   </div>
   <div class="grid">
     <a class="card rise" href="#case">
-      <span class="card__meta">Smart Minds · 2024—2026</span>
+      <span class="card__meta">Smart Minds · 2024—present</span>
       <h3 class="card__q">Why does the refresh keep failing overnight?</h3>
       <p class="card__d">Re-architected enterprise semantic models into star schema and refactored the worst DAX and M using DAX Studio, Tabular Editor and VertiPaq Analyzer.</p>
       <div class="tags"><span class="tag">Star schema</span><span class="tag">DAX</span><span class="tag">Power Query</span><span class="tag">Tabular Editor</span></div>
@@ -397,7 +398,7 @@ footer{ border-top:1px solid var(--line); padding-block:24px; background:color-m
   <div class="case rise">
     <div class="case__grid">
       <dl class="case__spec">
-        <dt>Where</dt><dd>Smart Minds, 2024—2026</dd>
+        <dt>Where</dt><dd>Smart Minds, 2024—present</dd>
         <dt>Role</dt><dd>Sole owner — modelling, DAX, Service</dd>
         <dt>Audience</dt><dd>200+ users across regions and business units</dd>
         <dt>Tooling</dt><dd>DAX Studio, Tabular Editor, VertiPaq Analyzer, Best Practice Analyzer</dd>
@@ -480,14 +481,14 @@ Sales YoY % =<br>
       <li>
         <div class="node">
           <div class="node__name">Smart Minds<small>Power BI Developer</small></div>
-          <div class="node__when">Nov 2024 — Aug 2026</div>
+          <div class="node__when now">Nov 2024 — Present</div>
         </div>
         <ul>
           <li><div class="leaf">Re-architected enterprise semantic models into star schema and refactored DAX and M with DAX Studio and Tabular Editor — <em>refresh time −55%</em>, scheduled failures eliminated.</div></li>
           <li><div class="leaf">Designed RLS roles across region, business unit and hierarchy on one governed dataset — <em>200+ users</em> with secure self-service, replacing 40 duplicated reports.</div></li>
-          <li><div class="leaf">Owned Power BI Service end to end: workspace and app lifecycle, dataflows, on-premises gateway, refresh scheduling — the manual weekly status reporting cycle retired.</div></li>
-          <li><div class="leaf">Built M ETL pipelines and DAX measures with time intelligence and what-if parameters, plus reconciliation checks validating published figures against source systems.</div></li>
-          <li><div class="leaf">Delivered <b>Tableau</b> and <b>Looker Studio</b> views alongside the certified Power BI layer for teams already working in those tools.</div></li>
+          <li><div class="leaf">Own Power BI Service end to end: workspace and app lifecycle, dataflows, on-premises gateway, refresh scheduling — the manual weekly status reporting cycle retired.</div></li>
+          <li><div class="leaf">Build M ETL pipelines and DAX measures with time intelligence and what-if parameters, plus reconciliation checks validating published figures against source systems.</div></li>
+          <li><div class="leaf">Deliver <b>Tableau</b> and <b>Looker Studio</b> views alongside the certified Power BI layer for teams already working in those tools.</div></li>
         </ul>
       </li>
       <li>
@@ -595,8 +596,8 @@ Sales YoY % =<br>
   <p class="eyebrow rise">Next</p>
   <h2 class="contact__h rise">Let's talk about<br>your model.</h2>
   <p class="lede rise" style="margin-inline:auto;text-align:center">
-    Available immediately, open to relocation and remote. Email is fastest — I reply within a day.
-    Happy to walk through any model, measure or RLS design above.
+    Currently with Smart Minds on a 30-day notice period — negotiable for the right role — and open to relocation and remote.
+    Email is fastest, I reply within a day. Happy to walk through any model, measure or RLS design above.
   </p>
   <div class="contact__links rise">
     <a class="btn btn--solid" href="mailto:sonimonil247@gmail.com">sonimonil247@gmail.com</a>
