@@ -257,6 +257,7 @@ footer{ border-top:1px solid var(--line); padding-block:24px; background:color-m
   .bg__pt{ opacity:1 }
   html{ scroll-behavior:auto }
 }
+.bg__net{ position:absolute; inset:0; width:100%; height:100%; display:block; opacity:.9 }
 </style>
 </head>
 <body>
@@ -265,6 +266,7 @@ footer{ border-top:1px solid var(--line); padding-block:24px; background:color-m
   <div class="bg__fine"></div>
   <div class="bg__grid"></div>
   <div class="bg__glow"></div>
+  <canvas class="bg__net" id="bgNet"></canvas>
   <div class="bg__series">
     <svg viewBox="0 0 1200 420" preserveAspectRatio="none">
       <defs>
@@ -788,6 +790,75 @@ document.querySelectorAll('.rise').forEach((el,i)=>{
   io.observe(el);
 });
 addEventListener('scroll',()=>topbar.classList.toggle('is-stuck',scrollY>8),{passive:true});
+/* ══ 4. Live data-network background ══ */
+(()=>{
+  const cv=document.getElementById('bgNet'); if(!cv) return;
+  const ctx=cv.getContext('2d');
+  const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const TEAL=[53,196,201], AMBER=[245,179,1], INK=[151,165,188];
+  let W,H,dpr,nodes=[],pulses=[],LINK,mouse={x:-9999,y:-9999};
+  function init(){
+    dpr=Math.min(devicePixelRatio||1,2); W=innerWidth; H=innerHeight;
+    cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.round(Math.min(110,Math.max(34,W*H/15000)));
+    LINK=W<640?110:150;
+    nodes=Array.from({length:n},(_,i)=>({
+      x:Math.random()*W, y:Math.random()*H,
+      vx:(Math.random()-.5)*.28, vy:(Math.random()-.5)*.28,
+      r:Math.random()<.12?2.6:1.2+Math.random()*1.1,
+      c:i%9===0?AMBER:(i%3===0?INK:TEAL), ph:Math.random()*6.28
+    }));
+    pulses=[];
+  }
+  const rgba=(c,a)=>`rgba(${c[0]},${c[1]},${c[2]},${a})`;
+  function frame(t){
+    ctx.clearRect(0,0,W,H);
+    for(const p of nodes){
+      if(!still){
+        const dx=p.x-mouse.x, dy=p.y-mouse.y, d2=dx*dx+dy*dy;
+        if(d2<22000){ const f=(1-d2/22000)*.05; p.vx+=dx*f*.02; p.vy+=dy*f*.02; }
+        p.vx*=.99; p.vy*=.99;
+        const sp=Math.hypot(p.vx,p.vy); if(sp<.08){ p.vx+=(Math.random()-.5)*.03; p.vy+=(Math.random()-.5)*.03; }
+        p.x+=p.vx; p.y+=p.vy;
+        if(p.x<-20)p.x=W+20; if(p.x>W+20)p.x=-20; if(p.y<-20)p.y=H+20; if(p.y>H+20)p.y=-20;
+      }
+    }
+    // edges
+    ctx.lineWidth=1;
+    for(let i=0;i<nodes.length;i++){
+      const a=nodes[i];
+      for(let j=i+1;j<nodes.length;j++){
+        const b=nodes[j], dx=a.x-b.x, dy=a.y-b.y, d=Math.hypot(dx,dy);
+        if(d<LINK){
+          const near=Math.hypot((a.x+b.x)/2-mouse.x,(a.y+b.y)/2-mouse.y)<180;
+          ctx.strokeStyle=rgba(near?AMBER:TEAL,(1-d/LINK)*(near?.38:.16));
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+          if(!still && Math.random()<.00035 && pulses.length<14) pulses.push({a,b,k:0});
+        }
+      }
+    }
+    // data packets travelling along edges
+    pulses=pulses.filter(p=>{
+      p.k+=.012; if(p.k>=1) return false;
+      const x=p.a.x+(p.b.x-p.a.x)*p.k, y=p.a.y+(p.b.y-p.a.y)*p.k;
+      ctx.fillStyle=rgba(AMBER,.85*Math.sin(p.k*Math.PI));
+      ctx.beginPath(); ctx.arc(x,y,1.8,0,6.28); ctx.fill(); return true;
+    });
+    // nodes
+    for(const p of nodes){
+      const tw=still?1:.7+.3*Math.sin(t/900+p.ph);
+      if(p.r>2){ ctx.fillStyle=rgba(p.c,.12*tw); ctx.beginPath(); ctx.arc(p.x,p.y,p.r*3.2,0,6.28); ctx.fill(); }
+      ctx.fillStyle=rgba(p.c,.75*tw); ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fill();
+    }
+    if(!still && !document.hidden) requestAnimationFrame(frame);
+  }
+  addEventListener('pointermove',e=>{ mouse.x=e.clientX; mouse.y=e.clientY; },{passive:true});
+  addEventListener('pointerleave',()=>{ mouse.x=mouse.y=-9999; });
+  document.addEventListener('mouseleave',()=>{ mouse.x=mouse.y=-9999; });
+  let rt; addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(()=>{ init(); if(still) frame(0); },150); });
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden && !still) requestAnimationFrame(frame); });
+  init(); requestAnimationFrame(frame);
+})();
 </script>
 </body>
 </html>
